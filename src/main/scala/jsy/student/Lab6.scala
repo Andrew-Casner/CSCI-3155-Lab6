@@ -137,7 +137,7 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
     */
   def test(re: RegExpr, chars: List[Char])(sc: List[Char] => Boolean): Boolean = (re, chars) match {
     /* Basic Operators */
-    case (RNoString, _) => ???
+    case (RNoString, _) => false
     case (REmptyString, _) => ???
     case (RSingle(_), Nil) => ???
     case (RSingle(c1), c2 :: t) => ???
