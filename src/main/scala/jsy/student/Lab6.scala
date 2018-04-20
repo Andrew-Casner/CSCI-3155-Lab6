@@ -149,14 +149,14 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
     case (RAnyChar, Nil) => false
     case (RAnyChar, _ :: t) => sc(t)
     case (RPlus(re1), _) => ???
-    case (ROption(re1), _) => ???
+    case (ROption(re1), _) => sc(chars) || test(re1, chars)(sc)
 
     /***** Extra Credit Cases *****/
     case (RIntersect(re1, re2), _) => ???
     case (RNeg(re1), _) => ???
   }
 
-  def retest(re: RegExpr, s: String): Boolean = test(re, s.toList) { chars => ??? }
+  def retest(re: RegExpr, s: String): Boolean = test(re, s.toList) { chars => chars.isEmpty }
 
 
   /*******************************/
