@@ -139,7 +139,7 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
     /* Basic Operators */
     case (RNoString, _) => false
     case (REmptyString, _) => sc(chars)
-    case (RSingle(_), Nil) => ???
+    case (RSingle(_), Nil) => false
     case (RSingle(c1), c2 :: t) => ???
     case (RConcat(re1, re2), _) => ???
     case (RUnion(re1, re2), _) => ???
