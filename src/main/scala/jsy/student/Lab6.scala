@@ -173,7 +173,23 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
        meta-language character.  Use delimiters.contains(c) for a Char c. */
     val delimiters = Set('|', '&', '~', '*', '+', '?', '!', '#', '.', '(', ')')
 
-    def atom(next: Input): ParseResult[RegExpr] = ???
+    def atom(next: Input): ParseResult[RegExpr] = {
+      if (next.atEnd) Failure("nothing to match against; expected atom", next)
+      else (next.first, next.rest) match {
+        case ('!',next) => Success(RNoString, next)
+        case ('#', next) => Success(REmptyString, next)
+        case ('.', next) => Success(RAnyChar, next)
+        case ('(', next) => re(next) match { // the inside of the parentheses should be a complete regular expression
+          case Success(r, next) => (next.first, next.rest) match { // entire inside of parens should be a complete regex
+            case (')', next) => Success(r, next) // we should now be at the closing paren
+            case _ => Failure("expected ')'", next) // otherwise fail
+          }
+          case _ => Failure("expected ')'", next)
+        }
+        case (c, next) => if (!delimiters.contains(c)) Success(RSingle(c),next) else Failure(c + " is a meta-language character", next)
+        case _ => Failure("expected atom", next)
+      }
+    }
   }
 
 
