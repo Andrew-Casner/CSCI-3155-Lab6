@@ -154,7 +154,20 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
       nots(next)
     }
 
-    def star(next: Input): ParseResult[RegExpr] = ???
+    def star(next: Input): ParseResult[RegExpr] = atom(next) match {
+      case Success(r, next) => {
+        def stars(acc : RegExpr, next : Input) : ParseResult[RegExpr] =
+          if (next.atEnd) Success(acc, next)
+          else (next.first, next.rest) match {
+            case ('*', next) => stars(RStar(acc), next)
+            case ('+', next) => stars(RPlus(acc), next)
+            case ('?', next) => stars(ROption(acc), next)
+            case _ => Success(acc, next)
+          }
+        stars(r, next)
+      }
+        case _ => Failure("expected atom", next)
+    }
 
     /* This set is useful to check if a Char is/is not a regular expression
        meta-language character.  Use delimiters.contains(c) for a Char c. */
