@@ -44,7 +44,13 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
   }
 
   def dfs[A](t: Tree)(f: Int => Boolean)(sc: List[Int] => A)(fc: () => A): A = {
-    def loop(path: List[Int], t: Tree)(fc: () => A): A = ???
+    def loop(path: List[Int], t: Tree)(fc: () => A): A = t match {
+      case Empty => fc()
+      case Node(l, d, r) => f(d) match {
+        case true  => sc(d::path)
+        case false => loop(d::path, l)(()=> loop(d::path, r)(fc))
+      }
+    }
     loop(Nil, t)(fc)
   }
 
