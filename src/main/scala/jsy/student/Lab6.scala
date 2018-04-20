@@ -139,7 +139,20 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
       case _ => Failure("expected not", next)
     }
 
-    def not(next: Input): ParseResult[RegExpr] = ???
+    def not(next: Input): ParseResult[RegExpr] = {
+      def nots(next: Input): ParseResult[RegExpr] =
+        (next.first, next.rest) match {
+          case ('~', next) => not(next) match {
+            case Success(r, next) => Success(RNeg(r), next)
+            case _ => Failure("expected not", next)
+          }
+          case (_, next) => star(next) match {
+            case Success(r, next) => Success(r, next)
+            case _ => Failure("expected star", next)
+          }
+        }
+      nots(next)
+    }
 
     def star(next: Input): ParseResult[RegExpr] = ???
 
