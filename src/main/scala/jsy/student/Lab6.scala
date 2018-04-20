@@ -141,7 +141,7 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
     case (REmptyString, _) => sc(chars)
     case (RSingle(_), Nil) => false
     case (RSingle(c1), c2 :: t) => if(c1==c2) sc(t) else false
-    case (RConcat(re1, re2), _) => ???
+    case (RConcat(re1, re2), _) => test(re1, chars)(charsp => test(re2, charsp)(sc))
     case (RUnion(re1, re2), _) => ???
     case (RStar(re1), _) => ???
 
