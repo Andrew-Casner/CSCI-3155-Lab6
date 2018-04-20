@@ -147,7 +147,7 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
 
     /* Extended Operators */
     case (RAnyChar, Nil) => false
-    case (RAnyChar, _ :: t) => ???
+    case (RAnyChar, _ :: t) => sc(t)
     case (RPlus(re1), _) => ???
     case (ROption(re1), _) => ???
 
