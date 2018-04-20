@@ -110,9 +110,34 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
       case _ => Failure("expected intersect", next)
     }
 
-    def intersect(next: Input): ParseResult[RegExpr] = ???
+    def intersect(next: Input): ParseResult[RegExpr] = concat(next) match {
+      case Success(r, next) => {
+        def intersects(acc: RegExpr, next: Input): ParseResult[RegExpr] =
+          if (next.atEnd) Success(acc, next)
+          else (next.first, next.rest) match {
+            case ('&', next) => intersect(next) match {
+              case Success(r, next) => intersects(RIntersect(acc, r), next)
+              case _ => Failure("expected concat", next)
+            }
+            case _ => Success(acc, next)
+          }
+        intersects(r, next)
+      }
+      case _ => Failure("expected concat", next)
+    }
 
-    def concat(next: Input): ParseResult[RegExpr] = ???
+    def concat(next: Input): ParseResult[RegExpr] = not(next) match {
+      case Success(r, next) => {
+        def concats(acc: RegExpr, next: Input): ParseResult[RegExpr] =
+          if (next.atEnd) Success(acc, next)
+          else not(next) match {
+            case Success(r, next) => concats(RConcat(acc, r), next)
+            case _ => Success(acc, next)
+          }
+        concats(r, next)
+      }
+      case _ => Failure("expected not", next)
+    }
 
     def not(next: Input): ParseResult[RegExpr] = ???
 
