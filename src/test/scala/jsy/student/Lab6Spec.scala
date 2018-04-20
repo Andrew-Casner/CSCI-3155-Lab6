@@ -2,7 +2,6 @@ package jsy.student
 
 import jsy.lab6.ast._
 import jsy.lab6.{Lab6Like, RegExprParser}
-import jsy.tester.JavascriptyTester
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 

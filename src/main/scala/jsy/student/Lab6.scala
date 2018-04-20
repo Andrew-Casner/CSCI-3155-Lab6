@@ -36,7 +36,10 @@ object Lab6 extends jsy.util.JsyApplication with Lab6Like {
   /*** Exercises with Continuations ***/
 
   def foldLeftAndThen[A,B](t: Tree)(z: A)(f: (A,Int) => A)(sc: A => B): B = {
-    def loop(acc: A, t: Tree)(sc: A => B): B = ???
+    def loop(acc: A, t: Tree)(sc: A => B): B = t match {
+      case Empty => sc(acc)
+      case Node(l, d, r) => loop(acc, l)((acc) => loop(f(acc, d), r)(sc))
+    }
     loop(z, t)(sc)
   }
 
